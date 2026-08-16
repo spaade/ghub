@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hub da Mireia</title>
+<meta name="description" content="To-do list e wishlist da Mireia — tarefas, categorias, prioridades e álbuns de desejos." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎀</text></svg>" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="bg-decor" aria-hidden="true">
+  <span style="top:6%; left:8%; animation-delay:0s;">⭐</span>
+  <span style="top:18%; left:80%; animation-delay:1.5s;">🎀</span>
+  <span style="top:34%; left:4%; animation-delay:3s;">💎</span>
+  <span style="top:52%; left:88%; animation-delay:2s;">🧁</span>
+  <span style="top:66%; left:12%; animation-delay:4s;">🐾</span>
+  <span style="top:80%; left:70%; animation-delay:1s;">🐈</span>
+  <span style="top:92%; left:30%; animation-delay:2.5s;">✨</span>
+</div>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero" id="topo">
+    <span class="eyebrow">✨ um hubzinho só seu</span>
+    <h1 class="hero-title">
+      <ruby>Mireia<rt>ミレイア</rt></ruby> <span class="accent">♡</span> Hub
+    </h1>
+    <p class="hero-lead">Suas tarefas e sua wishlist, organizadas do seu jeitinho.</p>
+    <nav class="tabs" role="tablist">
+      <button type="button" class="tab-btn active" data-tab="tarefas" role="tab" aria-selected="true">✅ Tarefas</button>
+      <button type="button" class="tab-btn" data-tab="wishlist" role="tab" aria-selected="false">🎀 Wishlist</button>
+    </nav>
+  </header>
+
+  <!-- TAREFAS -->
+  <section id="tarefas" class="tab-panel active">
+    <span class="eyebrow">painel de tarefas</span>
+    <h2 class="section-title">Suas tarefas</h2>
+
+    <div class="day-nav">
+      <button type="button" class="icon-btn" id="dayPrev" aria-label="Dia anterior">◀</button>
+      <button type="button" class="day-nav-label" id="dayLabel">Hoje</button>
+      <button type="button" class="icon-btn" id="dayNext" aria-label="Próximo dia">▶</button>
+    </div>
+    <div class="day-nav-actions">
+      <button type="button" class="btn btn-ghost btn-small" id="dayToday">Hoje</button>
+      <button type="button" class="btn btn-ghost btn-small" id="dayViewAll">Ver todas os dias</button>
+    </div>
+
+    <form class="panel-form" id="taskForm">
+      <input type="text" id="taskTitle" class="input-full" placeholder="Nova tarefa..." maxlength="200" required />
+      <div class="form-row">
+        <select id="taskCategory" aria-label="Categoria"></select>
+        <button type="button" class="btn btn-ghost btn-small" id="taskCategoryAddBtn">+ categoria</button>
+      </div>
+      <div class="form-row">
+        <select id="taskPriority" aria-label="Prioridade"></select>
+        <input type="date" id="taskDueDate" aria-label="Data" />
+      </div>
+      <button type="submit" class="btn btn-primary">Adicionar tarefa</button>
+    </form>
+
+    <div class="category-chips" id="taskCategoryChips"></div>
+
+    <div class="filter-bar">
+      <select id="taskFilterPriority" aria-label="Filtrar por prioridade">
+        <option value="">Todas prioridades</option>
+      </select>
+      <select id="taskFilterStatus" aria-label="Filtrar por status">
+        <option value="">Todas</option>
+        <option value="false">Pendentes</option>
+        <option value="true">Feitas</option>
+      </select>
+    </div>
+
+    <div class="task-list" id="taskList"></div>
+    <p class="empty-state" id="taskEmpty" hidden>Nenhuma tarefa por aqui ainda 🌙</p>
+  </section>
+
+  <!-- WISHLIST -->
+  <section id="wishlist" class="tab-panel">
+    <span class="eyebrow">painel de desejos</span>
+    <h2 class="section-title">Sua wishlist</h2>
+
+    <form class="panel-form" id="wishForm">
+      <input type="text" id="wishTitle" class="input-full" placeholder="O que você quer?" maxlength="200" required />
+      <div class="form-row">
+        <select id="wishAlbum" aria-label="Álbum"></select>
+        <button type="button" class="btn btn-ghost btn-small" id="wishAlbumAddBtn">+ álbum</button>
+      </div>
+      <div class="form-row">
+        <select id="wishPriority" aria-label="Prioridade"></select>
+        <input type="text" id="wishPrice" placeholder="Preço (opcional)" maxlength="30" />
+      </div>
+      <input type="url" id="wishLink" class="input-full" placeholder="Link (opcional)" maxlength="500" />
+      <button type="submit" class="btn btn-primary">Adicionar à wishlist</button>
+    </form>
+
+    <div class="category-chips" id="wishAlbumChips"></div>
+
+    <div class="filter-bar">
+      <select id="wishFilterPriority" aria-label="Filtrar por prioridade">
+        <option value="">Todas prioridades</option>
+      </select>
+      <select id="wishFilterStatus" aria-label="Filtrar por status">
+        <option value="">Todos</option>
+        <option value="false">Desejados</option>
+        <option value="true">Já comprados</option>
+      </select>
+    </div>
+
+    <div class="wish-grid" id="wishGrid"></div>
+    <p class="empty-state" id="wishEmpty" hidden>Sua wishlist está vazia por enquanto 🎀</p>
+  </section>
+
+  <footer>
+    Feito com <span class="heart">♡</span> pra Mireia — <ruby>Mireia<rt>ミレイア</rt></ruby> Hub
+  </footer>
+
+</div>
+
+<div id="toast"></div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/script.js"></script>
+<script src="js/tasks.js"></script>
+<script src="js/wishlist.js"></script>
+</body>
+</html>

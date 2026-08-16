@@ -1,0 +1,10 @@
+{
+  "name": "mhub-mireia",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Hub da Mireia — to-do list e wishlist com categorias/álbuns.",
+  "dependencies": {
+    "pg": "^8.11.5"
+  }
+}
