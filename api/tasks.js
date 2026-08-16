@@ -15,26 +15,26 @@ export default async function handler(req, res) {
     if (req.method === "GET") {
       const { category_id, priority, done, date } = req.query || {};
       const clauses = [];
-      const params = [];
+      const args = [];
 
       if (category_id) {
-        params.push(Number(category_id));
-        clauses.push(`category_id = $${params.length}`);
+        args.push(Number(category_id));
+        clauses.push("category_id = ?");
       }
       if (priority) {
         if (!PRIORITIES.includes(priority)) {
           return res.status(400).json({ ok: false, error: "priority inválida" });
         }
-        params.push(priority);
-        clauses.push(`priority = $${params.length}`);
+        args.push(priority);
+        clauses.push("priority = ?");
       }
       if (done === "true" || done === "false") {
-        params.push(done === "true");
-        clauses.push(`done = $${params.length}`);
+        args.push(done === "true" ? 1 : 0);
+        clauses.push("done = ?");
       }
       if (date) {
-        params.push(date);
-        clauses.push(`due_date = $${params.length}`);
+        args.push(date);
+        clauses.push("due_date = ?");
       }
 
       const where = clauses.length ? `WHERE ${clauses.join(" AND ")}` : "";
@@ -50,7 +50,7 @@ export default async function handler(req, res) {
                  CASE priority WHEN 'alta' THEN 0 WHEN 'media' THEN 1 ELSE 2 END,
                  tasks.created_at DESC
       `;
-      const { rows } = await query(sql, params);
+      const { rows } = await query(sql, args);
       return res.status(200).json({ ok: true, tasks: rows });
     }
 
@@ -63,7 +63,7 @@ export default async function handler(req, res) {
       const priority = PRIORITIES.includes(body.priority) ? body.priority : "media";
       const { rows } = await query(
         `INSERT INTO tasks (title, category_id, priority, due_date)
-         VALUES ($1, $2, $3, $4) RETURNING *`,
+         VALUES (?, ?, ?, ?) RETURNING *`,
         [
           String(title).trim().slice(0, 200),
           category_id ? Number(category_id) : null,
@@ -80,40 +80,40 @@ export default async function handler(req, res) {
 
       const fields = req.body || {};
       const sets = [];
-      const params = [];
+      const args = [];
 
       if (typeof fields.done === "boolean") {
-        params.push(fields.done);
-        sets.push(`done = $${params.length}`);
+        args.push(fields.done ? 1 : 0);
+        sets.push("done = ?");
       }
       if (typeof fields.title === "string" && fields.title.trim()) {
-        params.push(fields.title.trim().slice(0, 200));
-        sets.push(`title = $${params.length}`);
+        args.push(fields.title.trim().slice(0, 200));
+        sets.push("title = ?");
       }
       if (fields.category_id !== undefined) {
-        params.push(fields.category_id ? Number(fields.category_id) : null);
-        sets.push(`category_id = $${params.length}`);
+        args.push(fields.category_id ? Number(fields.category_id) : null);
+        sets.push("category_id = ?");
       }
       if (fields.priority !== undefined) {
         if (!PRIORITIES.includes(fields.priority)) {
           return res.status(400).json({ ok: false, error: "priority inválida" });
         }
-        params.push(fields.priority);
-        sets.push(`priority = $${params.length}`);
+        args.push(fields.priority);
+        sets.push("priority = ?");
       }
       if (fields.due_date !== undefined) {
-        params.push(fields.due_date || null);
-        sets.push(`due_date = $${params.length}`);
+        args.push(fields.due_date || null);
+        sets.push("due_date = ?");
       }
 
       if (!sets.length) {
         return res.status(400).json({ ok: false, error: "nada para atualizar" });
       }
 
-      params.push(id);
+      args.push(id);
       const { rows } = await query(
-        `UPDATE tasks SET ${sets.join(", ")} WHERE id = $${params.length} RETURNING *`,
-        params
+        `UPDATE tasks SET ${sets.join(", ")} WHERE id = ? RETURNING *`,
+        args
       );
       if (!rows.length) return res.status(404).json({ ok: false, error: "tarefa não encontrada" });
       return res.status(200).json({ ok: true, task: rows[0] });
@@ -122,7 +122,7 @@ export default async function handler(req, res) {
     if (req.method === "DELETE") {
       const id = Number((req.query || {}).id);
       if (!id) return res.status(400).json({ ok: false, error: "id inválido" });
-      await query(`DELETE FROM tasks WHERE id = $1`, [id]);
+      await query(`DELETE FROM tasks WHERE id = ?`, [id]);
       return res.status(200).json({ ok: true });
     }
 

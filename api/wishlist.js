@@ -15,22 +15,22 @@ export default async function handler(req, res) {
     if (req.method === "GET") {
       const { category_id, priority, purchased } = req.query || {};
       const clauses = [];
-      const params = [];
+      const args = [];
 
       if (category_id) {
-        params.push(Number(category_id));
-        clauses.push(`category_id = $${params.length}`);
+        args.push(Number(category_id));
+        clauses.push("category_id = ?");
       }
       if (priority) {
         if (!PRIORITIES.includes(priority)) {
           return res.status(400).json({ ok: false, error: "priority inválida" });
         }
-        params.push(priority);
-        clauses.push(`priority = $${params.length}`);
+        args.push(priority);
+        clauses.push("priority = ?");
       }
       if (purchased === "true" || purchased === "false") {
-        params.push(purchased === "true");
-        clauses.push(`purchased = $${params.length}`);
+        args.push(purchased === "true" ? 1 : 0);
+        clauses.push("purchased = ?");
       }
 
       const where = clauses.length ? `WHERE ${clauses.join(" AND ")}` : "";
@@ -46,7 +46,7 @@ export default async function handler(req, res) {
                  CASE priority WHEN 'alta' THEN 0 WHEN 'media' THEN 1 ELSE 2 END,
                  wishlist_items.created_at DESC
       `;
-      const { rows } = await query(sql, params);
+      const { rows } = await query(sql, args);
       return res.status(200).json({ ok: true, items: rows });
     }
 
@@ -61,7 +61,7 @@ export default async function handler(req, res) {
       const price = body.price && String(body.price).trim() ? String(body.price).trim().slice(0, 30) : null;
       const { rows } = await query(
         `INSERT INTO wishlist_items (title, category_id, priority, link, price)
-         VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+         VALUES (?, ?, ?, ?, ?) RETURNING *`,
         [String(title).trim().slice(0, 200), category_id ? Number(category_id) : null, priority, link, price]
       );
       return res.status(201).json({ ok: true, item: rows[0] });
@@ -73,44 +73,44 @@ export default async function handler(req, res) {
 
       const fields = req.body || {};
       const sets = [];
-      const params = [];
+      const args = [];
 
       if (typeof fields.purchased === "boolean") {
-        params.push(fields.purchased);
-        sets.push(`purchased = $${params.length}`);
+        args.push(fields.purchased ? 1 : 0);
+        sets.push("purchased = ?");
       }
       if (typeof fields.title === "string" && fields.title.trim()) {
-        params.push(fields.title.trim().slice(0, 200));
-        sets.push(`title = $${params.length}`);
+        args.push(fields.title.trim().slice(0, 200));
+        sets.push("title = ?");
       }
       if (fields.category_id !== undefined) {
-        params.push(fields.category_id ? Number(fields.category_id) : null);
-        sets.push(`category_id = $${params.length}`);
+        args.push(fields.category_id ? Number(fields.category_id) : null);
+        sets.push("category_id = ?");
       }
       if (fields.priority !== undefined) {
         if (!PRIORITIES.includes(fields.priority)) {
           return res.status(400).json({ ok: false, error: "priority inválida" });
         }
-        params.push(fields.priority);
-        sets.push(`priority = $${params.length}`);
+        args.push(fields.priority);
+        sets.push("priority = ?");
       }
       if (fields.link !== undefined) {
-        params.push(fields.link ? String(fields.link).trim().slice(0, 500) : null);
-        sets.push(`link = $${params.length}`);
+        args.push(fields.link ? String(fields.link).trim().slice(0, 500) : null);
+        sets.push("link = ?");
       }
       if (fields.price !== undefined) {
-        params.push(fields.price ? String(fields.price).trim().slice(0, 30) : null);
-        sets.push(`price = $${params.length}`);
+        args.push(fields.price ? String(fields.price).trim().slice(0, 30) : null);
+        sets.push("price = ?");
       }
 
       if (!sets.length) {
         return res.status(400).json({ ok: false, error: "nada para atualizar" });
       }
 
-      params.push(id);
+      args.push(id);
       const { rows } = await query(
-        `UPDATE wishlist_items SET ${sets.join(", ")} WHERE id = $${params.length} RETURNING *`,
-        params
+        `UPDATE wishlist_items SET ${sets.join(", ")} WHERE id = ? RETURNING *`,
+        args
       );
       if (!rows.length) return res.status(404).json({ ok: false, error: "item não encontrado" });
       return res.status(200).json({ ok: true, item: rows[0] });
@@ -119,7 +119,7 @@ export default async function handler(req, res) {
     if (req.method === "DELETE") {
       const id = Number((req.query || {}).id);
       if (!id) return res.status(400).json({ ok: false, error: "id inválido" });
-      await query(`DELETE FROM wishlist_items WHERE id = $1`, [id]);
+      await query(`DELETE FROM wishlist_items WHERE id = ?`, [id]);
       return res.status(200).json({ ok: true });
     }
 

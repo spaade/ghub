@@ -13,17 +13,17 @@ export default async function handler(req, res) {
   try {
     if (req.method === "GET") {
       const { kind } = req.query || {};
-      const params = [];
+      const args = [];
       let sql = "SELECT * FROM categories";
       if (kind) {
         if (!KINDS.includes(kind)) {
           return res.status(400).json({ ok: false, error: "kind inválido" });
         }
-        params.push(kind);
-        sql += ` WHERE kind = $${params.length}`;
+        args.push(kind);
+        sql += " WHERE kind = ?";
       }
       sql += " ORDER BY name ASC";
-      const { rows } = await query(sql, params);
+      const { rows } = await query(sql, args);
       return res.status(200).json({ ok: true, categories: rows });
     }
 
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
       const emoji = body.emoji && String(body.emoji).trim() ? String(body.emoji).trim().slice(0, 8) : "📌";
       const color = body.color && /^#[0-9a-fA-F]{6}$/.test(body.color) ? body.color : "#bb7ee0";
       const { rows } = await query(
-        `INSERT INTO categories (kind, name, emoji, color) VALUES ($1, $2, $3, $4) RETURNING *`,
+        `INSERT INTO categories (kind, name, emoji, color) VALUES (?, ?, ?, ?) RETURNING *`,
         [kind, String(name).trim().slice(0, 60), emoji, color]
       );
       return res.status(201).json({ ok: true, category: rows[0] });
@@ -48,7 +48,11 @@ export default async function handler(req, res) {
     if (req.method === "DELETE") {
       const id = Number((req.query || {}).id);
       if (!id) return res.status(400).json({ ok: false, error: "id inválido" });
-      await query(`DELETE FROM categories WHERE id = $1`, [id]);
+      // Sem FK cascade confiável num SQLite remoto — desvincula manualmente
+      // antes de apagar, pra não deixar tarefas/itens presos a uma categoria fantasma.
+      await query(`UPDATE tasks SET category_id = NULL WHERE category_id = ?`, [id]);
+      await query(`UPDATE wishlist_items SET category_id = NULL WHERE category_id = ?`, [id]);
+      await query(`DELETE FROM categories WHERE id = ?`, [id]);
       return res.status(200).json({ ok: true });
     }
 
