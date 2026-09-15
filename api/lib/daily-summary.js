@@ -54,9 +54,9 @@ export function getDailySummaryConfig(env = process.env) {
     runDate: env.DAILY_SUMMARY_RUN_DATE || getDateKey(timeZone),
     source: String(env.SUMMARY_SOURCE || "tasks").trim().toLowerCase(),
     categories: parseList(env.SUMMARY_CATEGORIES, DEFAULT_CATEGORIES).map(normalizeText),
-    title: env.SUMMARY_TOPIC || "Resumo da listinha da Mireia",
+    title: env.SUMMARY_TOPIC || "Resumo da listinha do Gustavo",
     sendEmpty: env.DAILY_SUMMARY_SEND_EMPTY !== "false",
-    mhubBaseUrl: normalizeBaseUrl(env.MHUB_BASE_URL),
+    ghubBaseUrl: normalizeBaseUrl(env.GHUB_BASE_URL),
     gowa: getGowaConfig(env),
   };
 }
@@ -71,12 +71,12 @@ export async function fetchWishlistSummaryItems(config = getDailySummaryConfig()
     return fetchTaskSummaryItems(config);
   }
 
-  if (config.mhubBaseUrl) {
-    const response = await fetch(`${config.mhubBaseUrl}/api/wishlist?purchased=false`);
+  if (config.ghubBaseUrl) {
+    const response = await fetch(`${config.ghubBaseUrl}/api/wishlist?purchased=false`);
     const data = await response.json().catch(() => null);
 
     if (!response.ok || !data || data.ok === false) {
-      const message = (data && data.error) || `mhub retornou HTTP ${response.status}`;
+      const message = (data && data.error) || `ghub retornou HTTP ${response.status}`;
       throw new Error(message);
     }
 
@@ -104,12 +104,12 @@ export async function fetchWishlistSummaryItems(config = getDailySummaryConfig()
 }
 
 async function fetchTaskSummaryItems(config) {
-  if (config.mhubBaseUrl) {
-    const response = await fetch(`${config.mhubBaseUrl}/api/tasks?done=false`);
+  if (config.ghubBaseUrl) {
+    const response = await fetch(`${config.ghubBaseUrl}/api/tasks?done=false`);
     const data = await response.json().catch(() => null);
 
     if (!response.ok || !data || data.ok === false) {
-      const message = (data && data.error) || `mhub retornou HTTP ${response.status}`;
+      const message = (data && data.error) || `ghub retornou HTTP ${response.status}`;
       throw new Error(message);
     }
 
@@ -217,7 +217,7 @@ export async function runDailySummary({ env = process.env, force = false, dryRun
   const config = getDailySummaryConfig(env);
   const runKey = `daily-summary:${config.runDate}`;
   const kind = "daily-summary";
-  const useRunLog = !config.mhubBaseUrl;
+  const useRunLog = !config.ghubBaseUrl;
 
   if (useRunLog && !force && !dryRun) {
     const existingRun = await readRun(runKey);
@@ -273,3 +273,4 @@ export function getScheduleState(env = process.env, now = new Date()) {
     targetLabel: `${String(Math.floor(targetMinutes / 60)).padStart(2, "0")}:${String(targetMinutes % 60).padStart(2, "0")}`,
   };
 }
+

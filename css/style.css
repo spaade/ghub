@@ -1,21 +1,21 @@
-@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap");
 
 :root {
-  --pink-50: #f8f2ff;
-  --pink-100: #ecd9fb;
-  --pink-200: #d7aef2;
-  --pink-300: #bb7ee0;
-  --pink-400: #a233c4;
-  --lavender: #d3c0f0;
-  --cream: #fdf9f1;
-  --gold: #e8b923;
-  --teal: #17a398;
-  --teal-bg: #d3f3ef;
-  --coral: #e0577e;
-  --coral-bg: #fbdde6;
-  --plum: #351b52;
-  --plum-soft: #5f4180;
-  --ink: #2c1a3f;
+  --pink-50: #f3f1ff;
+  --pink-100: #dfdaff;
+  --pink-200: #b9adff;
+  --pink-300: #8978f5;
+  --pink-400: #6251e8;
+  --lavender: #9b8df0;
+  --cream: #f8f7ff;
+  --gold: #ff2f78;
+  --teal: #4c55c7;
+  --teal-bg: #d9dcff;
+  --coral: #ff2f78;
+  --coral-bg: #ffd9e5;
+  --plum: #17162b;
+  --plum-soft: #4a4866;
+  --ink: #19182d;
   --white: #ffffff;
   --shadow: 0 10px 30px rgba(53, 27, 82, 0.16);
   --shadow-sm: 0 4px 14px rgba(53, 27, 82, 0.12);
@@ -40,9 +40,9 @@ html {
 
 body {
   margin: 0;
-  font-family: "Quicksand", sans-serif;
+  font-family: "Manrope", sans-serif;
   color: var(--ink);
-  background: linear-gradient(160deg, var(--pink-50) 0%, var(--lavender) 45%, var(--pink-100) 100%);
+  background: radial-gradient(circle at 85% 8%, rgba(255,47,120,.22), transparent 24%), linear-gradient(145deg, #17162b 0%, #302873 45%, #7568dc 100%);
   background-attachment: fixed;
   min-height: 100vh;
   overflow-x: hidden;
@@ -50,12 +50,12 @@ body {
 }
 
 h1, h2, h3, .display {
-  font-family: "Fredoka", sans-serif;
+  font-family: "Manrope", sans-serif;
   color: var(--plum);
 }
 
 button, a.btn, input, select {
-  font-family: "Quicksand", sans-serif;
+  font-family: "Manrope", sans-serif;
 }
 
 button, a.btn { touch-action: manipulation; }
@@ -111,11 +111,11 @@ section {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-family: "Fredoka", sans-serif;
+  font-family: "DM Mono", monospace;
   font-size: 0.72rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--plum-soft);
+  color: #dad8ff;
   background: var(--white);
   border: 1px solid var(--pink-200);
   padding: 6px 14px;
@@ -131,6 +131,7 @@ section {
   font-size: clamp(1.4rem, 6vw, 2rem);
   margin: 12px 0 8px;
   line-height: 1.15;
+  color: #fff;
 }
 
 /* ---------- hero ---------- */
@@ -146,15 +147,19 @@ section {
   font-size: clamp(2rem, 9vw, 2.8rem);
   line-height: 1.08;
   margin: 12px 0 8px;
+  color: #fff;
+  letter-spacing: -0.06em;
 }
 
 .hero-title .accent {
-  color: var(--pink-400);
+  color: var(--gold);
 }
+
+.brand-mark { color: var(--gold); }
 
 .hero-lead {
   font-size: 0.98rem;
-  color: var(--plum-soft);
+  color: #e0ddff;
   max-width: 420px;
   line-height: 1.6;
   margin: 0 auto;
@@ -169,11 +174,11 @@ section {
   padding: 6px;
   border-radius: 999px;
   box-shadow: var(--shadow-sm);
-  border: 1px solid rgba(255, 199, 222, 0.6);
+  border: 1px solid rgba(185, 173, 255, 0.6);
 }
 
 .tab-btn {
-  font-family: "Fredoka", sans-serif;
+  font-family: "DM Mono", monospace;
   font-size: 0.88rem;
   border: none;
   background: transparent;
@@ -270,7 +275,7 @@ section {
   border-radius: var(--radius-lg);
   padding: 18px;
   box-shadow: var(--shadow-sm);
-  border: 1px solid rgba(255, 199, 222, 0.6);
+  border: 1px solid rgba(185, 173, 255, 0.6);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -585,7 +590,7 @@ section {
 .empty-state {
   margin-top: 24px;
   text-align: center;
-  color: var(--plum-soft);
+  color: #eeeaff;
   font-size: 0.92rem;
 }
 

@@ -1,5 +1,5 @@
 /* =====================================================
-   Hub da Mireia — bootstrap, abas, toast e utilitários de data
+   ghub do Gustavo — bootstrap, abas, toast e utilitários de data
    ===================================================== */
 
 const WEEKDAYS_PT = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
@@ -89,3 +89,4 @@ function setupTabs() {
 document.addEventListener("DOMContentLoaded", () => {
   setupTabs();
 });
+

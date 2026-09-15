@@ -5,8 +5,8 @@
  */
 
 const CONFIG = {
-  herName: "Mireia",
-  herNameKatakana: "ミレイア",
+  herName: "Gustavo",
+  herNameKatakana: "グスタボ",
 
   priorities: [
     { id: "alta", label: "Alta", emoji: "🔥" },
@@ -16,8 +16,8 @@ const CONFIG = {
 
   // Usados ao criar uma categoria/álbum nova rapidinho (via prompt),
   // pra já sair com uma cor/emoji bonitinhos sem precisar perguntar.
-  categoryEmojis: ["📌", "🌸", "📚", "💻", "🧹", "🎯", "🛍️", "🏠", "💡", "🎨", "🎵", "🐾"],
-  categoryColors: ["#a233c4", "#e8b923", "#17a398", "#e0577e", "#bb7ee0", "#5f4180"],
+  categoryEmojis: ["📌", "🎧", "🦖", "🎵", "💻", "🎯", "🏋️", "📚", "🛍️", "🛰️", "⚡", "🎮"],
+  categoryColors: ["#6958ff", "#ff2f78", "#6e7b9b", "#b9a8ff", "#32364a", "#8d79f7"],
 };
 
 function priorityMeta(id) {

@@ -1,5 +1,5 @@
 /* =====================================================
-   Hub da Mireia — aba Wishlist
+   ghub do Gustavo — aba Wishlist
    ===================================================== */
 
 const WishlistModule = (() => {
@@ -221,3 +221,4 @@ const WishlistModule = (() => {
 document.addEventListener("DOMContentLoaded", () => {
   WishlistModule.init();
 });
+
