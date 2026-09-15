@@ -42,7 +42,7 @@ body {
   margin: 0;
   font-family: "Manrope", sans-serif;
   color: var(--ink);
-  background: radial-gradient(circle at 85% 8%, rgba(255,47,120,.22), transparent 24%), linear-gradient(145deg, #17162b 0%, #302873 45%, #7568dc 100%);
+  background: radial-gradient(circle at 85% 8%, rgba(255,47,120,.18), transparent 24%), linear-gradient(145deg, #11101e 0%, #262253 48%, #5b51b8 100%);
   background-attachment: fixed;
   min-height: 100vh;
   overflow-x: hidden;
@@ -165,6 +165,38 @@ section {
   margin: 0 auto;
 }
 
+.hero-art {
+  width: min(100%, 270px);
+  margin: 24px 0 2px;
+  position: relative;
+  transform: rotate(-2deg);
+}
+
+.hero-art img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: center 18%;
+  display: block;
+  border: 5px solid #f7f5ff;
+  border-radius: 22px;
+  box-shadow: 10px 12px 0 rgba(17, 16, 30, .34), 0 18px 36px rgba(10, 8, 30, .28);
+}
+
+.hero-art figcaption {
+  position: absolute;
+  right: -16px;
+  bottom: -14px;
+  padding: 7px 10px;
+  background: var(--gold);
+  color: #fff;
+  font: 500 .68rem "DM Mono", monospace;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  border-radius: 5px;
+  transform: rotate(3deg);
+}
+
 /* ---------- tabs ---------- */
 .tabs {
   margin-top: 24px;
@@ -271,7 +303,7 @@ section {
 /* ---------- forms ---------- */
 .panel-form {
   margin-top: 20px;
-  background: var(--white);
+  background: #fbfaff;
   border-radius: var(--radius-lg);
   padding: 18px;
   box-shadow: var(--shadow-sm);
