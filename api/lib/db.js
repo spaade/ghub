@@ -66,9 +66,19 @@ function ensureSchema() {
             purchased INTEGER NOT NULL DEFAULT 0,
             created_at TEXT NOT NULL DEFAULT (datetime('now'))
           )`,
+          `CREATE TABLE IF NOT EXISTS notification_runs (
+            run_key TEXT PRIMARY KEY,
+            kind TEXT NOT NULL,
+            status TEXT NOT NULL,
+            details TEXT,
+            sent_at TEXT,
+            created_at TEXT NOT NULL DEFAULT (datetime('now')),
+            updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+          )`,
           `CREATE INDEX IF NOT EXISTS idx_tasks_due_date ON tasks (due_date)`,
           `CREATE INDEX IF NOT EXISTS idx_tasks_category ON tasks (category_id)`,
           `CREATE INDEX IF NOT EXISTS idx_wishlist_category ON wishlist_items (category_id)`,
+          `CREATE INDEX IF NOT EXISTS idx_notification_runs_kind ON notification_runs (kind, created_at)`,
         ],
         "write"
       )

@@ -1,0 +1,22 @@
+services:
+  mireia-summary-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.summary-worker
+    restart: unless-stopped
+    env_file:
+      - .env.summary
+    environment:
+      TZ: ${DAILY_SUMMARY_TIMEZONE:-America/Sao_Paulo}
+    networks:
+      - gowa
+    volumes:
+      - summary-state:/app/state
+
+networks:
+  gowa:
+    external: true
+    name: gowa-berk_default
+
+volumes:
+  summary-state:

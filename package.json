@@ -4,6 +4,11 @@
   "version": "1.0.0",
   "type": "module",
   "description": "Hub da Mireia — to-do list e wishlist com categorias/álbuns.",
+  "scripts": {
+    "summary:once": "node scripts/send-daily-summary.js",
+    "summary:dry-run": "node scripts/send-daily-summary.js --dry-run",
+    "summary:worker": "node scripts/daily-summary-worker.js"
+  },
   "dependencies": {
     "@libsql/client": "^0.14.0"
   }
